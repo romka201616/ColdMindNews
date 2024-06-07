@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import NewsList from './components/NewsList';
+import LoginPage from './components/LoginPage';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (query) => {
+        setSearchQuery(query);
+        // Здесь вы можете добавить логику для выполнения поиска
+        console.log('Поиск:', query);
+    };
+
+    return (
+        <Router>
+            <Header onSearch={handleSearch} />
+            <Routes>
+                <Route path="/" element={<NewsList searchQuery={searchQuery} />} />
+                <Route path="/login" element={<LoginPage />} />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;
