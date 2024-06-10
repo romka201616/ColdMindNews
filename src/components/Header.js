@@ -3,12 +3,16 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, TextField, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-const Header = ({ onSearch }) => {
+const Header = ({ onSearch, user, onLogout }) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
 
     const handleLoginClick = () => {
         navigate('/login');
+    };
+
+    const handleProfileClick = () => {
+        navigate('/profile');
     };
 
     const handleSearchChange = (event) => {
@@ -39,9 +43,20 @@ const Header = ({ onSearch }) => {
                         Искать
                     </Button>
                 </Box>
-                <Button color="inherit" onClick={handleLoginClick} sx={{ marginLeft: 'auto' }}>
-                    Войти
-                </Button>
+                {user ? (
+                    <>
+                        <Button color="inherit" onClick={handleProfileClick} sx={{ marginLeft: 'auto' }}>
+                            Профиль
+                        </Button>
+                        <Button color="inherit" onClick={onLogout}>
+                            Выйти
+                        </Button>
+                    </>
+                ) : (
+                    <Button color="inherit" onClick={handleLoginClick} sx={{ marginLeft: 'auto' }}>
+                        Войти
+                    </Button>
+                )}
             </Toolbar>
         </AppBar>
     );

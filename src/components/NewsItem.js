@@ -1,8 +1,20 @@
 // src/components/NewsItem.js
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Card, CardContent, CardMedia, Typography, Button, IconButton, TextField, Box } from '@mui/material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
-const NewsItem = ({ article }) => {
+const NewsItem = ({ article, user, onFavoriteToggle, onCommentSubmit }) => {
+    const [comment, setComment] = useState('');
+
+    const handleFavoriteToggle = () => {
+        onFavoriteToggle(article);
+    };
+
+    const handleCommentSubmit = () => {
+        onCommentSubmit(article.id, comment);
+        setComment('');
+    };
+
     return (
         <Card sx={{ maxWidth: '100%', margin: '20px auto' }}>
             {article.urlToImage && (
@@ -20,9 +32,21 @@ const NewsItem = ({ article }) => {
                 <Typography variant="body2" color="text.secondary">
                     {article.description}
                 </Typography>
-                <Button size="small" color="primary" href={article.url} target="_blank">
-                    Read more
-                </Button>
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                    <IconButton onClick={handleFavoriteToggle}>
+                        {article.isFavorite ? <Favorite color="error" /> : <FavoriteBorder />}
+                    </IconButton>
+                    <TextField
+                        label="Комментарий"
+                        fullWidth
+                        margin="normal"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                    <Button variant="contained" color="primary" onClick={handleCommentSubmit}>
+                        Добавить комментарий
+                    </Button>
+                </Box>
             </CardContent>
         </Card>
     );
